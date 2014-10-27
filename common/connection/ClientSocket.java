@@ -25,7 +25,7 @@ public class ClientSocket implements Runnable {
     // The default port.
     int portNumber = 2222;
     // The default host.
-    String host = "localhost";
+    String host = " 91.67.3.71";
 
     if (args.length < 2) {
       System.out
