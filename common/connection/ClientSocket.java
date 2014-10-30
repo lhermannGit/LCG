@@ -28,14 +28,15 @@ public class ClientSocket implements Runnable {
 
   private static BufferedReader inputLine = null;
   private static boolean closed = false;
+  private static boolean turn = false;
   
   public static void main(String[] args) throws ClassNotFoundException {
 
     // The default port.
     int portNumber = 2222;
     // The default host.
-    String host = "91.67.3.71";
-//    String host = "localhost";
+    // String host = "91.67.3.71";
+    String host = "localhost";
 
     /*
      * Open a socket on a given host and port. Open input and output streams.
@@ -102,33 +103,38 @@ public class ClientSocket implements Runnable {
             
             while (iter.hasNext()){
             	Action action = iter.next();
+            	switch (action.getField()) {
+            		case 5:	turn = true; break;
+            		case 6:	turn = false; break;
+            	}
             	System.out.println(action.getField());
             	System.out.println(action.getValue());
             	System.out.println(action.getValue2());
             }
+            if (turn) {
+            	//clear Command
+            	sendCommand.clear();
             
-            //clear Command
-            sendCommand.clear();
+            	System.out.println("Which command?");
+            	sendCommand.setCommand(Integer.parseInt(inputLine.readLine()));
             
-            System.out.println("Which command?");
-            sendCommand.setCommand(Integer.parseInt(inputLine.readLine()));
+            	System.out.println("Which param1?");
+            	param1 = Integer.parseInt(inputLine.readLine());
+            	if(param1 >= 0)
+            		sendCommand.setParam1(param1);
             
-            System.out.println("Which param1?");
-            param1 = Integer.parseInt(inputLine.readLine());
-            if(param1 >= 0)
-            sendCommand.setParam1(param1);
+            	System.out.println("Which param2?");
+            	param2 = Integer.parseInt(inputLine.readLine());
+            	if(param2 >= 0)
+            		sendCommand.setParam2(param2);
             
-            System.out.println("Which param2?");
-            param2 = Integer.parseInt(inputLine.readLine());
-            if(param2 >= 0)
-            sendCommand.setParam2(param2);
-            
-            System.out.println("Which param3?");
-            param3 = inputLine.readLine();
-            if(param3 != null)
+            	System.out.println("Which param3?");
+            	param3 = inputLine.readLine();
+            	if(param3 != null)
             	sendCommand.setParam3(param3);
             
-            os.writeObject(sendCommand);
+            	os.writeObject(sendCommand);
+            }
 
     	}  
         
